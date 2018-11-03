@@ -3,7 +3,7 @@
 
 Created in Dot.NET Core 1.1.  Wraps datasets at https://jsonplaceholder.typicode.com.
 
-Displays a paged set of albums with search capabilities for album title and user name.
+Displays a paged set of albums with search capabilities for album title and user's name.
 
 Information displayed includes:
   * First album thumbnail
