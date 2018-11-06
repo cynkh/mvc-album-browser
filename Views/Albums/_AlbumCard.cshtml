@@ -1,0 +1,49 @@
+@using mvc_album_browser.Models
+
+@model Album
+
+@{
+    var album = Model;
+    var thumbnailUrl = album.Photos.First().ThumbnailUrl;
+    var user = Model.User;
+}
+
+<div class="col-md-4 album-card">
+    <div class="thumbnail">
+        <img src="@thumbnailUrl" alt="@album.Title" />
+        <div class="caption">
+            <h4>
+                <a asp-area="" 
+                    asp-controller="Albums" 
+                    asp-action="Details" 
+                    asp-route-id="@album.Id">
+                        @album.Title
+                </a>
+            </h4>
+            <p>
+                <a asp-area="" 
+                    asp-controller="Users" 
+                    asp-action="Details" 
+                    asp-route-id="@user.Id">
+                        @user.Name
+                </a><br />
+                </span><br />
+                <span>@user.EmailAddress</span><br />
+
+                @if (user.PhoneNumber != null && user.PhoneNumber.Trim().Length > 0)
+                {
+                    <span>@user.PhoneNumber</span><br />
+                }
+
+                <span>@user.Address.Street</span><br />
+
+                @if (user.Address.Suite != null && user.Address.Suite.Trim().Length > 0)
+                {
+                    <span>@user.Address.Suite</span><br />
+                }
+
+                <span>@user.Address.City, @user.Address.ZipCode</span>
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+@using System.Collections.Generic
+@using System.Linq
+
+@using mvc_album_browser.Models
+
+@model AlbumsIndexViewModel
+
+@{
+    ViewData["Title"] = "Albums";
+
+    var albums = Model.Albums;
+    var totalAlbumCount = Model.TotalAlbumCount;
+    var albumCount = albums.Count();
+    var showingFrom = Model.Page * 3;
+    var showingTo = showingFrom + 2;
+    var searchTerms = Model.Search;
+}
+
+<style type="text/css">
+    div.album-card > div.thumbnail {
+        height: 360px;
+        overflow-y: none;
+    }
+</style>
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="frm-search" action="/Albums" method="get">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <span class="input-group-text" id="search-prepend">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </span>
+                </span>
+                <input type="text" 
+                    id="Search" 
+                    name="Search" 
+                    class="form-control" 
+                    placeholder="Album title or user's name" 
+                    aria-label="Search" 
+                    value="@searchTerms"
+                    aria-describedby="search-prepend" />
+                <span class="input-group-btn">
+                    <button class="btn btn-radio @(Model.SearchType == null || Model.SearchType.Equals(SearchType.Title) ? "btn-primary" : "btn-default")" 
+                        type="button" 
+                        id="SearchType_Title" 
+                        value="Title">Title</button>
+                    <button class="btn btn-radio @(Model.SearchType.Equals(SearchType.Name) ? "btn-primary" : "btn-default")" 
+                        type="button" 
+                        id="SearchType_Name" 
+                        value="Name">Name</button>
+                </span>
+            </div>
+            @Html.HiddenFor(m => m.Page)
+            @Html.HiddenFor(m => m.SearchType)
+        </form>
+    </div>
+    <div class="col-md-12">
+        @Html.Partial("_AlbumPagination")
+        <div class="alert alert-info">
+            Showing albums @showingFrom through @showingTo of @totalAlbumCount
+        </div>
+    </div>
+</div>
+
+@if (albums.Any())
+{
+    var i = 0;
+
+    <div class="row">&nbsp;</div>
+
+    <div class="row">
+        @foreach (var album in albums)
+        {
+            @Html.Partial("_AlbumCard", album)
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        No albums found for the search criteria "@searchTerms"
+    </div>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#SearchType_Title').click(function() {
+                $('#SearchType').val('Title');
+                $('#SearchType_Title')
+                    .removeClass('btn-default')
+                    .removeClass('btn-primary')
+                    .addClass('btn-primary');
+                $('#SearchType_Name')
+                    .removeClass('btn-primary')
+                    .removeClass('btn-default')
+                    .addClass('btn-default');
+            });
+            $('#SearchType_Name').click(function() {
+                $('#SearchType').val('Name');
+                $('#SearchType_Name')
+                    .removeClass('btn-default')
+                    .removeClass('btn-primary')
+                    .addClass('btn-primary');                    
+                $('#SearchType_Title')
+                    .removeClass('btn-primary')
+                    .removeClass('btn-default')
+                    .addClass('btn-default');
+            });
+        });
+    </script>
+}

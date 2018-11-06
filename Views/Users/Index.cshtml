@@ -1,0 +1,38 @@
+@using System.Collections.Generic
+@using System.Linq
+
+@using mvc_album_browser.Models
+
+@{
+    ViewData["Title"] = "Users";
+    var users = ViewData["Users"] as IEnumerable<User>;
+}
+<h2>@ViewData["Title"]</h2>
+
+@if (users != null && users.Any())
+{
+    @foreach (var user in users)
+    {
+        <div>
+            <span>
+                <a asp-area="" 
+                    asp-controller="Users" 
+                    asp-action="" 
+                    asp-route-id="@user.Id">
+                        @user.Name
+                </a>
+            </span><br />
+            <span>@user.EmailAddress</span><br />
+            @if (user.PhoneNumber != null && user.PhoneNumber.Trim().Length > 0)
+            {
+                <span>@user.PhoneNumber</span><br />
+            }
+            <span>@user.Address.Street</span><br />
+            @if (user.Address.Suite != null && user.Address.Suite.Trim().Length > 0)
+            {
+                <span>@user.Address.Suite</span><br />
+            }
+            <span>@user.Address.City, @user.Address.ZipCode</span>
+        </div>
+    }
+}

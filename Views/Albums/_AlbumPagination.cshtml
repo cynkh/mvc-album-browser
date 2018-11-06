@@ -1,0 +1,71 @@
+@using mvc_album_browser.Models
+
+@model AlbumsIndexViewModel
+
+@{
+    var pageNum = Model.Page;
+    var totalPages = Model.TotalPages;
+    var firstPage = pageNum <= 1 ? 0 : pageNum - 1;
+    var lastPage = pageNum + 5 > totalPages ? totalPages - 5 : pageNum + 5;
+}
+
+<nav aria-label="Album page selection">
+  <ul class="pagination">
+    <li>
+        <a asp-area="" 
+            asp-controller="Albums" 
+            asp-action="Index" 
+            asp-route-page="@firstPage">
+                &laquo;
+        </a>
+    </li>
+    <li class="active">
+        <a asp-area="" 
+            asp-controller="Albums" 
+            asp-action="Index" 
+            asp-route-page="@pageNum">
+                @(pageNum + 1)<span class="sr-only"(current)</span>
+        </a>
+    </li>
+    <li>
+      <a asp-area="" 
+            asp-controller="Albums" 
+            asp-action="Index" 
+            asp-route-page="@(pageNum + 1)">
+                @(pageNum + 2)<span class="sr-only"(current)</span>
+        </a>
+    </li>
+    <li>
+      <a asp-area="" 
+            asp-controller="Albums" 
+            asp-action="Index" 
+            asp-route-page="@(pageNum + 2)">
+                @(pageNum + 3)<span class="sr-only"(current)</span>
+        </a>
+    </li>
+    <li>
+      <a asp-area="" 
+            asp-controller="Albums" 
+            asp-action="Index" 
+            asp-route-page="@(pageNum + 3)">
+                @(pageNum + 4)<span class="sr-only"(current)</span>
+        </a>
+    </li>
+    <li>
+      <a asp-area="" 
+            asp-controller="Albums" 
+            asp-action="Index" 
+            asp-route-page="@(pageNum + 4)">
+                @(pageNum + 5)<span class="sr-only"(current)</span>
+        </a>
+    </li>
+    <li>
+        <a asp-area="" 
+            asp-controller="Albums" 
+            asp-action="Index" 
+            asp-route-page="@lastPage">
+                &raquo;
+        </a>
+    </li>
+  </ul>
+</nav>

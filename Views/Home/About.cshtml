@@ -1,7 +1,30 @@
-﻿@{
+﻿@using System.Collections.Generic
+@using mvc_album_browser.Entities
+
+@{
     ViewData["Title"] = "About";
+    var users = ViewData["Users"] as IEnumerable<user>;
+    var albums = ViewData["Albums"] as IEnumerable<album>;
 }
 <h2>@ViewData["Title"].</h2>
 <h3>@ViewData["Message"]</h3>
 
+<div class="row">
+    <ul>
+    @foreach (var user in users)
+    {
+        <li>@user.name</li>
+    }
+    </ul>
+</div>
+
 <p>Use this area to provide additional information.</p>
+
+<div class="row">
+    <ul>
+    @foreach (var album in albums)
+    {
+        <li>@album.title</li>
+    }
+    </ul>
+</div>

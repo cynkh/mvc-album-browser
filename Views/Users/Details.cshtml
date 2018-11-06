@@ -1,0 +1,52 @@
+@using mvc_album_browser.Models
+
+@model UsersDetailsViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+    var user = Model.User;
+    var posts = user.Posts;
+}
+<h2>@ViewData["Title"]</h2>
+
+<div class="col-md-12">
+    <label class="control-label">Name:</label>
+    <span>@user.Name</span><br />
+    <label class="control-label">Email Address:</label>
+    <span>@user.EmailAddress</span><br />
+    @if (user.PhoneNumber != null && user.PhoneNumber.Trim().Length > 0)
+    {
+        <label class="control-label">Phone Number:</label>
+        <span>@user.PhoneNumber</span><br />
+    }
+    <label class="control-label">Address:</label>
+    <span>@user.Address.Street</span><br />
+    @if (user.Address.Suite != null && user.Address.Suite.Trim().Length > 0)
+    {
+        <label class="control-label">Suite:</label>
+        <span>@user.Address.Suite</span><br />
+    }
+    <label class="control-label">City, Zip Code:</label>
+    <span>@user.Address.City, @user.Address.ZipCode</span>
+</div>
+<div class="row">
+    <a class="btn btn-default" 
+        role="button" 
+        data-toggle="collapse" 
+        href="#posts" 
+        aria-expanded="false" 
+        aria-controls="posts">
+            View Posts <span class="badge">@posts.Count()</span>
+    </a>
+    <div class="collapse" id="posts">
+        <div class="well">
+            @foreach (var post in posts)
+            {
+                <div class="row">
+                    <h3>@post.Title</h3>
+                    <p>@post.Body</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

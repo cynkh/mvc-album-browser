@@ -1,0 +1,36 @@
+@using System.Collections.Generic
+@using System.Linq
+
+@using mvc_album_browser.Models
+
+@{
+    ViewData["Title"] = "Album Thumbnails";
+    var album = ViewData["Album"] as Album;
+    var thumbnails = album.Photos;
+}
+
+<style type="text/css">
+    div.well.well-thumbnails {
+        height: 320px;
+        overflow-y: scroll;
+    }
+    div.div-thumbnail {
+        margin-bottom: 8pt;
+    }
+</style>
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="well well-lg well-thumbnails">
+        @foreach (var thumbnail in thumbnails)
+        {
+            <div class="col-md-2 div-thumbnail">
+                <img src="@thumbnail.ThumbnailUrl" />
+            </div>
+        }
+    </div>
+</div>
+<div class="row">
+    <h3>@album.Title</h3>
+</div>
