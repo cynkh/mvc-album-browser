@@ -19,12 +19,12 @@
                 &laquo;
         </a>
     </li>
-    <li class="active">
+    <li class="@(pageNum == 0 ? "active" : "")">
         <a asp-area="" 
             asp-controller="Albums" 
             asp-action="Index" 
-            asp-route-page="@pageNum">
-                @(pageNum + 1)<span class="sr-only"(current)</span>
+            asp-route-page="0">
+                1<span class="sr-only"(current)</span>
         </a>
     </li>
     <li>
@@ -55,15 +55,15 @@
       <a asp-area="" 
             asp-controller="Albums" 
             asp-action="Index" 
-            asp-route-page="@(pageNum + 4)">
-                @(pageNum + 5)<span class="sr-only"(current)</span>
+            asp-route-page="@(totalPages - 1)">
+                @totalPages<span class="sr-only"(current)</span>
         </a>
     </li>
     <li>
         <a asp-area="" 
             asp-controller="Albums" 
             asp-action="Index" 
-            asp-route-page="@lastPage">
+            asp-route-page="@(@pageNum + 1)">
                 &raquo;
         </a>
     </li>
