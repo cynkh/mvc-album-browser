@@ -54,6 +54,8 @@ namespace mvc_album_browser
                 .AddTransient<PostsService, PostsService>()
                 .AddTransient<CompleteAlbumsService, CompleteAlbumsService>()
                 .AddMvc();
+            
+            new MapperConfigurationStartupTask().OnStartup();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
