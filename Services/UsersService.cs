@@ -46,28 +46,30 @@ namespace mvc_album_browser.Services
         }
         private User _getUserModelFromEntity(user user)
         {
-            var address = user.address;
+            return user.MapTo<user, User>();
 
-            return new User
-            {
-                Id = user.id,
-                Name = user.name,
-                UserName = user.username,
-                PhoneNumber = user.phone,
-                EmailAddress = user.email,
-                Address = new Address
-                {
-                    Street = address.street,
-                    Suite = address.suite,
-                    City = address.city,
-                    ZipCode = address.zipcode,
-                    Geo = new GeoLocation
-                    {
-                        Latitude = address.geo.lat,
-                        Longitude = address.geo.lng
-                    }
-                }
-            };
+            // var address = user.address;
+
+            // return new User
+            // {
+            //     Id = user.id,
+            //     Name = user.name,
+            //     UserName = user.username,
+            //     PhoneNumber = user.phone,
+            //     EmailAddress = user.email,
+            //     Address = new Address
+            //     {
+            //         Street = address.street,
+            //         Suite = address.suite,
+            //         City = address.city,
+            //         ZipCode = address.zipcode,
+            //         Geo = new GeoLocation
+            //         {
+            //             Latitude = address.geo.lat,
+            //             Longitude = address.geo.lng
+            //         }
+            //     }
+            // };
         }
     }
 }

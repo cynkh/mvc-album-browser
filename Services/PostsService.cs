@@ -30,13 +30,15 @@ namespace mvc_album_browser.Services
         }
         private Post _getPostModelFromEntity(post post)
         {
-            return new Post
-            {
-                Id = post.id,
-                UserId = post.userId,
-                Title = post.title,
-                Body = post.body
-            };
+            return post.MapTo<post, Post>();
+
+            // return new Post
+            // {
+            //     Id = post.id,
+            //     UserId = post.userId,
+            //     Title = post.title,
+            //     Body = post.body
+            // };
         }
     }
 }

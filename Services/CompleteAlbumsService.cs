@@ -129,14 +129,16 @@ namespace mvc_album_browser.Services
                 Id = album.id,
                 Title = album.title,
                 User = user,
-                Photos = photos.Select(p => new Photo
-                {
-                    Id = p.id,
-                    AlbumId = p.albumId,
-                    Title = p.title,
-                    Url = p.url,
-                    ThumbnailUrl = p.thumbnailUrl,
-                })
+                Photos = photos.Select(p => p.MapTo<photo, Photo>())
+
+                // Photos = photos.Select(p => new Photo
+                // {
+                //     Id = p.id,
+                //     AlbumId = p.albumId,
+                //     Title = p.title,
+                //     Url = p.url,
+                //     ThumbnailUrl = p.thumbnailUrl,
+                // })
             };
         }
     }
