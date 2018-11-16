@@ -3,47 +3,42 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace mvc_album_browser
 {
-    public class MapperConfigurator
+    public class MapperConfigurator : IMapperConfigurator
     {
         private IEnumerable<MapperConfiguration> _maps;
-        private static MapperConfigurator _mapperConfigurator = null;
         public MapperConfigurator()
         {
             _maps = new List<MapperConfiguration>();
         }
-        public static MapperConfigurator Mapper
-        {
-            get
-            {
-                if (_mapperConfigurator == null)
-                {
-                    _mapperConfigurator = new MapperConfigurator();
-                }
-
-                return _mapperConfigurator;
-            }
-        }
-        public void SetMap<TSource, TResult>(Func<TSource, TResult> map) where TSource : class 
-                                                                        where TResult : class
+        public IMapperConfigurator SetMapper<TSource, TResult>(Func<TSource, TResult> map, 
+            string configurationString = null)
+            where TSource : class 
+            where TResult : class
         {
             var maps = _maps.ToList();
 
-            var existingMap = _maps.FirstOrDefault(m => !m.HasConfigurationString && 
-                m.TSource.Equals(typeof(TSource)) && 
-                m.TResult.Equals(typeof(TResult)));
+            var existingConfig = _getExistingConfiguration<TSource, TResult>(configurationString);
 
-            var config = existingMap ?? new MapperConfiguration();
+            // var existingConfig = _maps.FirstOrDefault(m => !m.HasConfigurationString && 
+            //     m.TSource.Equals(typeof(TSource)) && 
+            //     m.TResult.Equals(typeof(TResult)));
 
-            if (existingMap != null)
+            var config = existingConfig ?? new MapperConfiguration();
+
+            if (existingConfig != null)
             {
-                maps.Remove(existingMap);
+                maps.Remove(existingConfig);
             }
             else
             {
                 config.TSource = typeof(TSource);
                 config.TResult = typeof(TResult);
+                config.HasConfigurationString = configurationString != null;
+                config.ConfigurationString = configurationString;
             }
 
             config.Map = new Mapper<TSource, TResult>(map);
@@ -51,18 +46,35 @@ namespace mvc_album_browser
             maps.Add(config);
 
             _maps = maps;
+
+            return this;
         }
-
-        public IMapper<TSource, TResult> GetMapper<TSource, TResult>() where TSource : class 
-                                                                        where TResult : class 
+        public IMapper<TSource, TResult> GetMapper<TSource, TResult>(string configurationString = null)
+            where TSource : class 
+            where TResult : class 
         {
-            var map = _maps.FirstOrDefault(m => m != null && 
-                !m.HasConfigurationString && 
-                m.TSource.Equals(typeof(TSource)) && 
-                m.TResult.Equals(typeof(TResult))) ?? new MapperConfiguration();
+            var config = _getExistingConfiguration<TSource, TResult>(configurationString) ?? 
+                new MapperConfiguration();
 
-            return map.Map as IMapper<TSource, TResult> ?? 
-                new Mapper<TSource, TResult>();
+            // var config = _maps.FirstOrDefault(m => m != null && 
+            //     !m.HasConfigurationString && 
+            //     m.TSource.Equals(typeof(TSource)) && 
+            //     m.TResult.Equals(typeof(TResult))) ?? new MapperConfiguration();
+
+            return (config.Map ?? new Mapper<TSource, TResult>()) as IMapper<TSource, TResult>;
+        }
+        private MapperConfiguration _getExistingConfiguration<TSource, TResult>(string configurationString = null)
+            where TSource : class
+            where TResult : class
+        {
+            return _maps.FirstOrDefault(c => 
+                c.TSource.Equals(typeof(TSource)) && 
+                c.TResult.Equals(typeof(TResult)) && 
+                ((configurationString == null && !c.HasConfigurationString) || 
+                    (configurationString != null && 
+                        c.HasConfigurationString && 
+                        c.ConfigurationString == configurationString)
+                ));
         }
     }
     public class MapperConfiguration
