@@ -1,7 +1,5 @@
 using System;
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace mvc_album_browser
 {
     public static class MapperExtensions
@@ -10,7 +8,7 @@ namespace mvc_album_browser
         {
             get
             {
-                return MapperConfiguratorProvider.Configurator;
+                return MapperConfiguratorProvider.GetMapperConfigurator();
             }
         }
         public static TDst MapTo<TSrc, TDst>(this TSrc src) where TSrc : class 

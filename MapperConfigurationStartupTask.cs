@@ -1,5 +1,3 @@
-using System;
-
 using mvc_album_browser.Entities;
 using mvc_album_browser.Models;
 
@@ -8,15 +6,13 @@ namespace mvc_album_browser
     public class MapperConfigurationStartupTask : IStartupTask
     {
         private readonly IMapperConfigurator _mapperConfigurator;
-        public MapperConfigurationStartupTask(IMapperConfigurator mapperConfigurator)
+        public MapperConfigurationStartupTask()
         {
-            _mapperConfigurator = mapperConfigurator;
+            _mapperConfigurator = MapperConfiguratorProvider.GetMapperConfigurator();
         }
         public void OnStartup()
         {
             _setMappers();
-
-            MapperConfiguratorProvider.GetMapperConfigurator = () => _mapperConfigurator;
         }
         private void _setMappers()
         {

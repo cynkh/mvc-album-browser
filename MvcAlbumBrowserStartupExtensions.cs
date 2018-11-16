@@ -17,6 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return services
                 .AddSingleton<IMapperConfigurator, MapperConfigurator>()
+                .AddSingleton<MapperConfiguratorProviderStartupTask, MapperConfiguratorProviderStartupTask>()
                 .AddSingleton<MapperConfigurationStartupTask, MapperConfigurationStartupTask>()
                 .AddTransient(typeof(IJsonSerializer<>), typeof(NewtonsoftHttpJsonSerializer<>))
                 .addHttpEntityClients(configuration)

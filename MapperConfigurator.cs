@@ -23,10 +23,6 @@ namespace mvc_album_browser
 
             var existingConfig = _getExistingConfiguration<TSource, TResult>(configurationString);
 
-            // var existingConfig = _maps.FirstOrDefault(m => !m.HasConfigurationString && 
-            //     m.TSource.Equals(typeof(TSource)) && 
-            //     m.TResult.Equals(typeof(TResult)));
-
             var config = existingConfig ?? new MapperConfiguration();
 
             if (existingConfig != null)
@@ -55,11 +51,6 @@ namespace mvc_album_browser
         {
             var config = _getExistingConfiguration<TSource, TResult>(configurationString) ?? 
                 new MapperConfiguration();
-
-            // var config = _maps.FirstOrDefault(m => m != null && 
-            //     !m.HasConfigurationString && 
-            //     m.TSource.Equals(typeof(TSource)) && 
-            //     m.TResult.Equals(typeof(TResult))) ?? new MapperConfiguration();
 
             return (config.Map ?? new Mapper<TSource, TResult>()) as IMapper<TSource, TResult>;
         }
